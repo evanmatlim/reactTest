@@ -1,13 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useRef } from 'react';
 
+
+// move to secret keys in github
+const API_KEY = 'tr-J7kRNSBIeuhovTGYu7rhPWxK9N4KtWXJ';
+const DB_ID = 'ec4117c0-0af7-4edd-9eb4-99fa46c4590c';
+const ORG_ID = "d8be229a-5116-4b28-ade5-da13199cd3fb";
 
 
 function SearchBar({ searchType, onSearch }) {
   const inputRef = useRef(null);
 
-  const handleKeyDown = (event) => {
+  const handleKeyUp = (event) => {
     if (event.key === 'Enter') {
       inputRef.current.blur(); 
     }
@@ -21,7 +25,7 @@ function SearchBar({ searchType, onSearch }) {
         className="search-text" 
         type="text" 
         placeholder="Search..." 
-        onKeyUp={handleKeyDown}
+        onKeyUp={handleKeyUp}
       />
     </div>
   );
@@ -73,9 +77,9 @@ export default function App() {
     const options = {
       method: 'POST',
       headers: {
-        // REPLACE WITH ENV VARIABLES
-        Authorization: 'tr-J7kRNSBIeuhovTGYu7rhPWxK9N4KtWXJ',
-        'TR-Dataset': 'ec4117c0-0af7-4edd-9eb4-99fa46c4590c',
+        Authorization: API_KEY,
+        'TR-Dataset': DB_ID,
+        "TR-Organization": ORG_ID,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -87,7 +91,6 @@ export default function App() {
         search_type: searchType,
         use_weights: true
       }),
-      
     };
     
     try {
@@ -106,7 +109,7 @@ export default function App() {
 
   async function handleSearch(searchText) {
     // fetch results
-    await fetchSearchResults(searchText, mode);
+    await fetchSearchResults(searchText, mode.toLowerCase());
   }
 
   return (
@@ -130,3 +133,5 @@ export default function App() {
     </>
   );
 }
+
+
