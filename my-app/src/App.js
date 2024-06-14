@@ -8,53 +8,39 @@ const DB_ID = 'ec4117c0-0af7-4edd-9eb4-99fa46c4590c';
 const ORG_ID = "d8be229a-5116-4b28-ade5-da13199cd3fb";
 
 
-function SearchBar({ searchType, onSearch }) {
+function SearchBar({ onSearch }) {
   const inputRef = useRef(null);
 
   const handleKeyUp = (event) => {
     if (event.key === 'Enter') {
       inputRef.current.blur(); 
     }
-    onSearch(event.target.value);
+    onSearch();
   };
 
   return (
-    <div className="search-input">
+    <div className="search-bar">
       <input 
         ref={inputRef}
-        className="search-text" 
+        className="search-input" 
         type="text" 
-        placeholder="Search..." 
+        placeholder="Search thousands of books by title, author, or description" 
         onKeyUp={handleKeyUp}
+        autoFocus
       />
+      <img className="search-button" src={ require('./search.png')} onClick={onSearch}/>
     </div>
   );
 }
 
-function ModeMenu({ mode, onModeClick }) {
-  const[isOpen, setIsOpen] = useState(false);
-
-  function handleOpen(isOpen) {
-    setIsOpen(isOpen);
-  }
-
-  let buttonDisplay, contentDisplay;
-
-  if (isOpen) {
-    buttonDisplay = "none";
-    contentDisplay = "flex";
-  } else {
-    buttonDisplay = "flex";
-    contentDisplay = "none";
-  }
-
+function ModeMenu({ onModeClick }) {
   return (
-    <div className="dropdown">
-      <button className="dropdown-button" style={{"display": buttonDisplay}} onClick={() => handleOpen(true)}>{ mode }</button>
-      <div className="dropdown-content" style={{"display": contentDisplay}} >
-        <div className="dropdown-option Semantic selected" onClick={() => {onModeClick("Semantic"); handleOpen(false)} }>Semantic</div>
-        <div className="dropdown-option FullText" onClick={() => {onModeClick("FullText"); handleOpen(false)} }>FullText</div>
-        <div className="dropdown-option Hybrid" onClick={() => {onModeClick("Hybrid"); handleOpen(false)} }>Hybrid</div>
+    <div className="mode-menu">
+      Search Type:
+      <div className="mode-content">
+        <div className="mode-option semantic selected" onClick={() => onModeClick("semantic") }>Semantic</div>
+        <div className="mode-option fulltext" onClick={() => onModeClick("fulltext") }>FullText</div>
+        <div className="mode-option hybrid" onClick={() => onModeClick("hybrid") }>Hybrid</div>
       </div>
     </div>
   );
@@ -66,61 +52,60 @@ export default function App() {
 
   function handleMode(mode) {
     setMode(mode);
-    let dropdownOptions = Array.from(document.getElementsByClassName("dropdown-option"));
-    dropdownOptions.forEach((option) => {
+    let modeOptions = Array.from(document.getElementsByClassName("mode-option"));
+    modeOptions.forEach((option) => {
       option.classList.remove("selected");
     });
     document.querySelector("." + mode).classList.add("selected");
   }
 
   async function fetchSearchResults(query, searchType) {
-    const options = {
-      method: 'POST',
-      headers: {
-        Authorization: API_KEY,
-        'TR-Dataset': DB_ID,
-        "TR-Organization": ORG_ID,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        date_bias: true,
-        page: 1,
-        page_size: 10,
-        query: query,
-        score_threshold: 0.5,
-        search_type: searchType,
-        use_weights: true
-      }),
-    };
+    console.log(`searching for: ${query} with search type: ${searchType}`)
+    // const options = {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: API_KEY,
+    //     'TR-Dataset': DB_ID,
+    //     "TR-Organization": ORG_ID,
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     date_bias: true,
+    //     page: 1,
+    //     page_size: 10,
+    //     query: query,
+    //     score_threshold: 0.5,
+    //     search_type: searchType,
+    //     use_weights: true
+    //   }),
+    // };
     
-    try {
-      const response = await fetch('https://api.trieve.ai/api/chunk/search', options);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      console.log(data);
-      const data = await response.json();
-      setSearchResults(data.results);
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      setSearchResults([]);
-    }
+    // try {
+    //   const response = await fetch('https://api.trieve.ai/api/chunk/search', options);
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! Status: ${response.status}`);
+    //   }
+    //   console.log(data);
+    //   const data = await response.json();
+    //   setSearchResults(data.results);
+    // } catch (error) {
+    //   console.error('Error fetching search results:', error);
+    //   setSearchResults([]);
+    // }
   }
 
-  async function handleSearch(searchText) {
-    // fetch results
-    await fetchSearchResults(searchText, mode.toLowerCase());
+  async function handleSearch() {
+    const searchText = document.querySelector(".search-input").value;
+    await fetchSearchResults(searchText, mode);
   }
 
   return (
-    <>
-      <div className="title">title</div>
-      <div className="description">description</div>
-      <div className="search-bar">
-        <SearchBar onSearch={handleSearch}/>
-      </div>
-      <div className="mode-menu">
-        <ModeMenu mode={ mode } onModeClick={ handleMode } />
+    <div className="content">
+      <div className="title">thrift<b>books</b> trieve search</div>
+      <div className="description">Read more. Search less.</div>
+      <SearchBar onSearch={handleSearch}/>
+      <div className="mode-menu unselectable">
+        <ModeMenu onModeClick={ handleMode } />
       </div>
       <div className="search-results">
         {searchResults.map(result => (
@@ -130,7 +115,7 @@ export default function App() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
 
