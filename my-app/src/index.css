@@ -82,6 +82,7 @@ html, body, #root {
 
 .description {
   cursor: default;
+  color: #5f5f5f;
 }
 
 .search-bar {
@@ -97,13 +98,14 @@ html, body, #root {
   border-style: none;
 }
 
-.search-input, .search-input:focus {
+.search-input{
   width: 490px;
   height: 36px;
   font-size: 12pt;
   border-radius: 6px;
   border-style: solid;
   border-width: 1px;
+  border-color: #b7b7b7;
 }
 
 .search-input:focus {
