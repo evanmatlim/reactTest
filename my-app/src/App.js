@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // move to secret keys in github
 const API_KEY = "tr-DYbMJZg0xzEFCQKrGzBgbXaY8NPn85GN";
@@ -65,7 +65,6 @@ function ModeMenu({ onModeClick }) {
 
 function SearchResults({ searchResults }) {
   function highlightText(text, highlights) {
-    console.log(highlights);
     let highlightedText = text;
   
     highlights.forEach(highlight => {
@@ -142,7 +141,6 @@ export default function App() {
       }
 
       const data = await response.json();
-      console.log(data)
       setSearchResults(data.score_chunks);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -154,6 +152,11 @@ export default function App() {
     const searchText = document.querySelector(".search-input").value;
     await fetchSearchResults(searchText, searchType);
   }
+
+  useEffect(() => {
+    // Fetch initial search results with an empty query for "semantic" search type
+    fetchSearchResults("", "semantic");
+  }, []);
 
   return (
     <div className="content">
@@ -169,4 +172,3 @@ export default function App() {
     </div>
   );
 }
-
