@@ -64,13 +64,19 @@ function ModeMenu({ onModeClick }) {
 }
 
 function SearchResults({ searchResults }) {
+
   function highlightText(text, highlights) {
     let highlightedText = text;
-  
+    
     highlights.forEach(highlight => {
-      if (text.includes(highlight)) {
-        const highlightRegex = new RegExp(`(${highlight})`, 'gi');
-        highlightedText = highlightedText.replace(highlightRegex, `<span class="highlight">${highlight}</span>`);  
+      try {
+        if (text.includes(highlight)) {
+          const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const highlightRegex = new RegExp(`(${escapedHighlight})`, 'gi');
+          highlightedText = highlightedText.replace(highlightRegex, '<span class="highlight">$1</span>');
+        }
+      } catch (error) {
+        console.error(`Error processing highlight: ${highlight}`, error);
       }
     });
     return highlightedText;
