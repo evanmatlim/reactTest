@@ -63,6 +63,44 @@ function ModeMenu({ onModeClick }) {
   );
 }
 
+function SearchResults({ searchResults }) {
+  function highlightText(text, highlights) {
+    console.log(highlights);
+    let highlightedText = text;
+  
+    highlights.forEach(highlight => {
+      if (text.includes(highlight)) {
+        const highlightRegex = new RegExp(`(${highlight})`, 'gi');
+        highlightedText = highlightedText.replace(highlightRegex, `<span class="highlight">${highlight}</span>`);  
+      }
+    });
+    return highlightedText;
+  }
+
+  const results = 
+  [searchResults.map((result) => (
+    <div key={result.metadata[0].id} className="search-result">
+      <div className="search-image-holder">
+        <img src={result.metadata[0].metadata["image_url"]} className="search-image"/>
+      </div>
+      <div className="search-result-content">
+        <h3>{result.metadata[0].metadata.title}</h3>
+        <h5>by {result.metadata[0].metadata.authors}</h5>
+        <p dangerouslySetInnerHTML={{ __html: highlightText(result.metadata[0].metadata.overview, result.highlights) }} />
+        {/* <p>{result.metadata[0].metadata.overview}</p> */}
+      </div>
+    </div>
+  ))];
+  return (
+    <>
+      <div className="search-results">
+        {results}
+        <div className="spacer"></div>
+      </div>
+    </>
+  );
+}
+
 export default function App() {
   const [mode, setMode] = useState("semantic");
   const [searchResults, setSearchResults] = useState([]);
@@ -104,6 +142,7 @@ export default function App() {
       }
 
       const data = await response.json();
+      console.log(data)
       setSearchResults(data.score_chunks);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -126,14 +165,8 @@ export default function App() {
       <div className="mode-menu unselectable">
         <ModeMenu onModeClick={handleMode} />
       </div>
-      <div className="search-results">
-        {searchResults.map((result) => (
-          <div key={result.metadata[0].id} className="search-result">
-            <h3>{result.metadata[0].metadata.title}</h3>
-            <p>{result.metadata[0].metadata.content}</p>
-          </div>
-        ))}
-      </div>
+      <SearchResults searchResults={searchResults}/>
     </div>
   );
 }
+
