@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/reactTest/static/css/main.f0495452.css",
-    "main.js": "/reactTest/static/js/main.93be39fb.js",
-    "static/js/453.ed3810f9.chunk.js": "/reactTest/static/js/453.ed3810f9.chunk.js",
-    "static/media/search.png": "/reactTest/static/media/search.cb90fc5231eef2970d34.png",
-    "index.html": "/reactTest/index.html",
-    "main.f0495452.css.map": "/reactTest/static/css/main.f0495452.css.map",
-    "main.93be39fb.js.map": "/reactTest/static/js/main.93be39fb.js.map",
-    "453.ed3810f9.chunk.js.map": "/reactTest/static/js/453.ed3810f9.chunk.js.map"
+    "main.css": "/thriftbooks-trieve-search/static/css/main.f0495452.css",
+    "main.js": "/thriftbooks-trieve-search/static/js/main.fdb8eb2f.js",
+    "static/js/453.ed3810f9.chunk.js": "/thriftbooks-trieve-search/static/js/453.ed3810f9.chunk.js",
+    "static/media/search.png": "/thriftbooks-trieve-search/static/media/search.cb90fc5231eef2970d34.png",
+    "index.html": "/thriftbooks-trieve-search/index.html",
+    "main.f0495452.css.map": "/thriftbooks-trieve-search/static/css/main.f0495452.css.map",
+    "main.fdb8eb2f.js.map": "/thriftbooks-trieve-search/static/js/main.fdb8eb2f.js.map",
+    "453.ed3810f9.chunk.js.map": "/thriftbooks-trieve-search/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f0495452.css",
-    "static/js/main.93be39fb.js"
+    "static/js/main.fdb8eb2f.js"
   ]
 }
