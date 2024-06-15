@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://evanmatlim.github.io/reactTest",
+  "homepage": "https://evanmatlim.github.io/thriftbooks-trieve-search",
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^5.45.0",
