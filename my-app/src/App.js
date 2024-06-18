@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState, useRef, useEffect } from "react";
+import logo from "./thriftbooks_logo.svg";
 
 // move to secret keys in github
 const API_KEY = "tr-DYbMJZg0xzEFCQKrGzBgbXaY8NPn85GN";
@@ -64,7 +65,6 @@ function ModeMenu({ onModeClick }) {
 }
 
 function SearchResults({ searchResults }) {
-
   function highlightText(text, highlights) {
     let highlightedText = text;
     
@@ -167,7 +167,11 @@ export default function App() {
   return (
     <div className="content">
       <div className="title">
-        thrift<b>books</b> trieve search
+        <img
+          src={logo}
+          style={{width:'40px', height:'40px'}}
+        />
+        &nbsp;thrift<b>books</b> trieve search
       </div>
       <div className="description">Read more. Search less.</div>
       <SearchBar searchType={mode} onSearch={handleSearch} />
